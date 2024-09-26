@@ -8,6 +8,7 @@ import Home from "./views/home/Home";
 import Login from "./views/auth/Login";
 import PrivateRoutes from "./utils/ProtectedRoutes";
 import Profile from "./views/profile/Profile";
+import TrainingList from "./views/training/TrainingList";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -25,6 +26,19 @@ function App() {
             }
             path="/"
           />
+
+          <Route
+            element={
+              <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>
+                <TrainingList
+                  collapsed={collapsed}
+                  setCollapsed={setCollapsed}
+                />
+              </Dashboard>
+            }
+            path="/training"
+          />
+
           <Route
             element={
               <Dashboard collapsed={collapsed} setCollapsed={setCollapsed}>

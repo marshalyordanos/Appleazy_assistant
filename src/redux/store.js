@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "../views/auth/authReducer";
+import trainingReducer from "../views/training/TrainingRedux"; // import the training
 
 // Persist configuration for the auth reducer
 const authPersistConfig = {
@@ -25,6 +26,7 @@ const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    training: trainingReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

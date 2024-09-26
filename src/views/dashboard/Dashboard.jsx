@@ -11,6 +11,8 @@ import {
   LeftOutlined,
   RightOutlined,
   LogoutOutlined,
+  BookOutlined,
+  CheckSquareOutlined,
 } from "@ant-design/icons";
 import { Avatar, Breadcrumb, Dropdown, Layout, Menu, theme } from "antd";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -27,10 +29,12 @@ function getItem(label, key, icon, children) {
   };
 }
 const menuItems = [
-  getItem("Home", "/", <HomeOutlined />),
-  getItem("Job board", "/job_board", <InfoCircleOutlined />),
+  getItem("Training", "/training", <BookOutlined />),
+  getItem("Exercise", "/exercise", <CheckSquareOutlined />),
 
-  getItem("History", "/histry", <BarChartOutlined />),
+  // getItem("Job board", "/job_board", <InfoCircleOutlined />),
+
+  // getItem("History", "/histry", <BarChartOutlined />),
 ];
 
 const Dashboard = ({ children, collapsed, setCollapsed }) => {
@@ -202,7 +206,7 @@ const Dashboard = ({ children, collapsed, setCollapsed }) => {
         <Content
           style={{
             margin: "0 ",
-            background: "#edf0ff",
+            background: "#f0f0f0",
           }}
         >
           {children}

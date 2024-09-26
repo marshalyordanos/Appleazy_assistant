@@ -56,10 +56,10 @@
 .ant-float-btn-icon {
   color: white !important;
 }
-.ant-table-thead .ant-table-cell {
+/* .ant-table-thead .ant-table-cell {
   background-color: #ffffff !important;
   color: #718ebf !important;
-}
+} */
 .otpinput {
   border: 1px solid #d9d9d9 !important;
   width: 55px !important;
