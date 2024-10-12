@@ -13,6 +13,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import authReducer from "../views/auth/authReducer";
 import trainingReducer from "../views/training/TrainingRedux"; // import the training
+import exerciseReducer from "../views/exercise/ExerciseRedux"; // import the exercise
 
 // Persist configuration for the auth reducer
 const authPersistConfig = {
@@ -27,6 +28,7 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     training: trainingReducer,
+    exercise: exerciseReducer, // add the exercise here
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

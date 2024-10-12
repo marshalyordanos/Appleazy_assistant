@@ -1,29 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import CommonTable from "../../components/commons/CommonTable";
 import { MoreOutlined, ReloadOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Select, Space } from "antd";
+import { Button, Dropdown, Input, Select, Tag } from "antd";
 import styled from "styled-components";
 import CommonModal from "../../components/commons/CommonModel";
 
-import trainingService from "./TrainingService";
-import TrainingEdit from "./TrainingEdit";
+import exerciseService from "./ExerciseService";
+import ExerciseEdit from "./ExerciseEdit";
 import { NavLink, useSearchParams } from "react-router-dom";
-
+// import {
+//   HeaderStyle,
+//   SearchInputStyle,
+// } from "../../components/commons/CommonStyles";
 import CommonDeleteModal from "../../components/commons/CommonDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  searchTraining,
-  updateTrainingState,
-  trainingSearchText,
-} from "./TrainingRedux";
+  searchExercise,
+  updateExerciseState,
+  exerciseSearchText,
+} from "./ExerciseRedux";
 
-const TrainingList = ({ collapsed, setCollapsed }) => {
-  const [trainingData, setTrainingData] = useState([]);
+const ExerciseList = ({ collapsed, setCollapsed }) => {
+  const [exerciseData, setExerciseData] = useState([]);
   const [total, setTotal] = useState();
 
-  const searchText = useSelector(trainingSearchText);
+  const searchText = useSelector(exerciseSearchText);
   const [loading, setLoading] = useState();
-  const [trainingSelection, setTrainingSelection] = useState([]);
+  const [exerciseSelection, setExerciseSelection] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -39,7 +42,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
 
   useEffect(() => {
     const [page, limit] = getPaginationInfo();
-    dispatch(updateTrainingState({ page: page, limit: limit }));
+    dispatch(updateExerciseState({ page: page, limit: limit }));
     // setSearchParams({ ...Object.fromEntries(searchParams), 'searchText': e.target.value })
     searchData();
   }, []);
@@ -47,8 +50,8 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   async function searchData() {
     try {
       setLoading(true);
-      const { payload } = await dispatch(searchTraining());
-      setTrainingData(payload.data);
+      const { payload } = await dispatch(searchExercise());
+      setExerciseData(payload.data);
       setTotal(payload.total);
       setLoading(false);
     } catch (err) {
@@ -62,7 +65,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
 
     // setSearchParams({ page: page, limit: limit })
     dispatch(
-      updateTrainingState({ page: page, limit: limit, searchText: value })
+      updateExerciseState({ page: page, limit: limit, searchText: value })
     );
     clearTimeout(delayTimerRef.current);
     delayTimerRef.current = setTimeout(() => {
@@ -73,19 +76,19 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   const handlePagination = async (page, pageSize) => {
     // permmission exmple
 
-    // if (!(await authService.checkPermmision('training', 'read'))) {
+    // if (!(await authService.checkPermmision('exercise', 'read'))) {
     //     return message.error('You have not a permmission');
     // }
 
     setSearchParams({ page: page, limit: pageSize });
-    dispatch(updateTrainingState({ page: page, limit: pageSize }));
+    dispatch(updateExerciseState({ page: page, limit: pageSize }));
 
     searchData();
   };
 
   const tableChange = (pagination, filters, sorter) => {
     const { field, order } = sorter;
-    dispatch(updateTrainingState({ sort: field, order: order }));
+    dispatch(updateExerciseState({ sort: field, order: order }));
 
     searchData();
   };
@@ -95,7 +98,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
 
     setSearchParams({ page: 1, limit: 5 });
     dispatch(
-      updateTrainingState({
+      updateExerciseState({
         page: 1,
         limit: 5,
         sort: "",
@@ -109,7 +112,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      const data = await trainingService.deleteTrainin(modeID);
+      const data = await exerciseService.deleteExercis(modeID);
       setIsDeleteModalOpen(false);
 
       searchData();
@@ -136,18 +139,6 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
       key: "delete",
       label: <Button type="text"> Delete</Button>,
     },
-    // {
-    //   key: "3",
-    //   label: (
-    //     <a
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //       href="https://www.luohanacademy.com"
-    //     >
-    //       3rd menu item
-    //     </a>
-    //   ),
-    // },
   ];
 
   const columns = [
@@ -177,61 +168,58 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
     },
 
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "name",
-      render: (text) => <a>{text}</a>,
+      title: "Type",
+      dataIndex: "type",
+      render: (text, recored) => {
+        return (
+          <NavLink
+            style={{ color: "#2f1dca" }}
+            state={recored}
+            to={`${recored._id}`}
+          >
+            {text}
+          </NavLink>
+        );
+      },
+      sorter: true,
     },
-    {
-      title: "Training Type",
-      dataIndex: "trainingType",
-      key: "trainingType",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => <p>{text.substring(0, 20)}...</p>,
-    },
-    {
-      title: "Content",
-      dataIndex: "otehr_content",
-      key: "otehr_content",
-      render: (text) => <p>{text.substring(0, 20)}...</p>,
-    },
-    // {
-    //   title: "Tags",
-    //   key: "tags",
-    //   dataIndex: "tags",
-    //   render: (_, { tags }) => (
-    //     <>
-    //       {tags.map((tag) => {
-    //         let color = tag.length > 5 ? "geekblue" : "green";
-    //         if (tag === "loser") {
-    //           color = "volcano";
-    //         }
-    //         return (
-    //           <Tag color={color} key={tag}>
-    //             {tag.toUpperCase()}
-    //           </Tag>
-    //         );
-    //       })}
-    //     </>
-    //   ),
-    // },
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   fixed: "right",
-    //   render: (_, record) => (
-    //     <Space size="middle">
-    //       <a>Invite {record.name}</a>
-    //       <a>Update</a>
 
-    //       <a>Delete</a>
-    //     </Space>
-    //   ),
+    {
+      title: "Question",
+      dataIndex: "question",
+      sorter: true,
+    },
+
+    {
+      title: "Choice",
+      dataIndex: "choice",
+      sorter: true,
+      render: (text) => {
+        return (
+          <div className="flex gap-1 items-center w-[280px] flex-wrap  ">
+            {text.split("*+*").map((c) => c && <Tag>{c}</Tag>)}
+          </div>
+        );
+      },
+    },
+
+    // {
+    //   title: "files",
+    //   dataIndex: "files",
+    //   sorter: true,
     // },
+
+    {
+      title: "Training type",
+      dataIndex: "trainingType",
+      sorter: true,
+    },
+
+    {
+      title: "Excercise type",
+      dataIndex: "excerciceType",
+      sorter: true,
+    },
   ];
 
   return (
@@ -246,8 +234,8 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
         >
-          <TrainingEdit
-            trainingData={trainingData}
+          <ExerciseEdit
+            exerciseData={exerciseData}
             searchData={searchData}
             setMode={setModeID}
             mode={modeID}
@@ -274,7 +262,7 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
 
       <span className="flex md:flex-row flex-col justify-between items-start md:items-end borde border-rose-700">
         <div className="flex flex-col p-6 md:w-[45vw] w-full">
-          <h1 className="text-2xl font-bold pb-4">Trainings</h1>
+          <h1 className="text-2xl font-bold pb-4">Exercises</h1>
           <div className="flex">
             <Input
               onChange={searchHandler}
@@ -294,16 +282,13 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
                 className=""
                 placeholder="Select item category"
               >
-                <Option value="all">All</Option>
-                <Option value={"training_one"}>Training one</Option>
-                <Option value={"training_two"}>Training two</Option>
-                <Option value={"training_three"}>Training three</Option>
-                <Option value={"training_four"}>Training four</Option>
+                <Option value="All">All</Option>
+                <Option value="spare_part">Spare part</Option>
+                <Option value="lubricant">Lubricants</Option>
               </Select>
             </div>
           </div>
         </div>
-
         <span className="flex ml-6 mb-6 md:mr-6">
           <button
             onClick={handleReload}
@@ -332,19 +317,17 @@ const TrainingList = ({ collapsed, setCollapsed }) => {
 
       <CommonTable
         rowSelectionType={"checkbox"}
-        data={trainingData}
+        data={exerciseData}
         columns={columns}
-        setSelection={setTrainingSelection}
+        setSelection={setExerciseSelection}
         handlePagination={handlePagination}
         total={total}
         loadding={loading}
         tableChange={tableChange}
-        scroll={{
-          x: "max-content",
-        }}
+        scroll={{ x: "full" }}
       />
     </div>
   );
 };
 
-export default TrainingList;
+export default ExerciseList;

@@ -14,6 +14,7 @@ const Home = ({ collapsed, setCollapsed }) => {
         collapsed ? "ml-[80px]" : "ml-[200px]"
       } transition-all ease-in mt-10 pl-10`}
     >
+      {/* <p></p> */}
       <h1 className="font-medium font-sans text-2xl pb-6">Home</h1>
       <div className="flex flex-wrap">
         <Card statusname="No of applications" statusamount="200" />

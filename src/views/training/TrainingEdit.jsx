@@ -403,64 +403,65 @@ const TrainingEdit = ({
           <TextArea rows={4} />
         </Form.Item>
 
-        <div className="my-5">
-          <p className="text-xl mb-4"> Images</p>
-          <Upload
-            //   action="http://localhost:5173"
-            listType="picture-card"
-            fileList={fileList}
-            onChange={onChangeImages}
-            onPreview={handlePreview}
-            action={null}
-            beforeUpload={beforeUpload}
-          >
-            {fileList.length < 3 && "+ Upload"}
-          </Upload>
+        <div className="flex gap-20">
+          <div className="my-5">
+            <p className=" mb-4"> Images</p>
+            <Upload
+              //   action="http://localhost:5173"
+              listType="picture-card"
+              fileList={fileList}
+              onChange={onChangeImages}
+              onPreview={handlePreview}
+              action={null}
+              beforeUpload={beforeUpload}
+            >
+              {fileList.length < 1 && "+ Upload"}
+            </Upload>
 
-          {previewImage && (
-            <Image
-              wrapperStyle={{
-                display: "none",
-              }}
-              preview={{
-                visible: previewOpen,
-                onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(""),
-              }}
-              src={previewImage}
-            />
-          )}
-        </div>
-        <div className="my-5">
-          <p className="text-xl mb-4"> Videos</p>
-          <Upload
-            //   action="http://localhost:5173"
-            listType="picture-card"
-            fileList={videoList}
-            onChange={onChangeVedios}
-            onPreview={handlePreview}
-            action={null}
-            beforeUpload={beforeUploadVideo}
-          >
-            {videoList.length < 3 && "+ Upload"}
-          </Upload>
-        </div>
+            {previewImage && (
+              <Image
+                wrapperStyle={{
+                  display: "none",
+                }}
+                preview={{
+                  visible: previewOpen,
+                  onVisibleChange: (visible) => setPreviewOpen(visible),
+                  afterOpenChange: (visible) => !visible && setPreviewImage(""),
+                }}
+                src={previewImage}
+              />
+            )}
+          </div>
+          <div className="my-5">
+            <p className=" mb-4"> Videos</p>
+            <Upload
+              //   action="http://localhost:5173"
+              listType="picture-card"
+              fileList={videoList}
+              onChange={onChangeVedios}
+              onPreview={handlePreview}
+              action={null}
+              beforeUpload={beforeUploadVideo}
+            >
+              {videoList.length < 1 && "+ Upload"}
+            </Upload>
+          </div>
 
-        <div className="my-5">
-          <p className="text-xl mb-4"> Ducuments</p>
-          <Upload
-            //   action="http://localhost:5173"
-            listType="picture-card"
-            fileList={documentList}
-            onChange={onChangeDocuments}
-            onPreview={handlePreview}
-            action={null}
-            beforeUpload={beforeUploadDocument}
-          >
-            {documentList.length < 3 && "+ Upload"}
-          </Upload>
+          <div className="my-5">
+            <p className=" mb-4"> Ducuments</p>
+            <Upload
+              //   action="http://localhost:5173"
+              listType="picture-card"
+              fileList={documentList}
+              onChange={onChangeDocuments}
+              onPreview={handlePreview}
+              action={null}
+              beforeUpload={beforeUploadDocument}
+            >
+              {documentList.length < 1 && "+ Upload"}
+            </Upload>
+          </div>
         </div>
-
         <ButtonStyle>
           <button onClick={() => setIsModalOpen(false)}>cancel</button>
           <button type="submit">Submit</button>

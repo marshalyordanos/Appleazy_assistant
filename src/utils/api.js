@@ -2,7 +2,7 @@ import axios from "axios";
 // const accessToken = useLocalStorageGetter("auth");
 
 const api = axios.create({
-  baseURL: "http://localhost:8001",
+  baseURL: "http://localhost:8000",
 });
 export const apiAuth = axios.create({
   // baseURL: "http://192.168.0.116:3000",
